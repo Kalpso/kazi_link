@@ -1,0 +1,721 @@
+# KAZILINK — MASTER STARTUP BUILD PROMPT
+## Premium African Talent Marketplace | Glassmorphism + Neumorphism | Investor-Ready Architecture
+
+Act as an elite product design team, senior full-stack engineering team, startup strategist, UX researcher, security engineer, and SaaS architect.
+
+Your mission is to build KAZILINK, a premium, mobile-first digital work marketplace that connects emerging African talent with businesses that need reliable digital services.
+
+Do not create an ordinary job board, a static landing page, or a collection of disconnected dashboard mockups.
+
+Build a cohesive, functional product with a distinctive visual identity, secure architecture, real user workflows, persistent data, and a credible path toward becoming a scalable African technology company.
+
+Start in Kenya, validate demand with a focused pilot, and design the architecture so the product can expand to additional African markets later.
+
+==================================================
+1. PRODUCT VISION AND POSITIONING
+==================================================
+
+Brand: KaziLink
+
+Working tagline: Skills that work. Opportunities that grow.
+
+Brand positioning:
+KaziLink helps businesses discover capable digital talent, manage projects with confidence, and build reliable working relationships. It helps emerging professionals demonstrate skills, earn through real work, and develop credible portfolios backed by completed engagements.
+
+Primary business problem:
+Small businesses often struggle to identify suitable digital talent, evaluate practical ability, define project expectations, and achieve reliable delivery.
+
+Primary worker problem:
+Students, recent graduates, and early-career professionals can struggle to demonstrate experience and obtain paid opportunities without an established professional network.
+
+Core product principle:
+Move beyond CVs and job listings toward demonstrated skills, structured paid projects, verified outcomes, and repeat business relationships.
+
+Important:
+Treat all market-demand claims as hypotheses until validated with real users. Do not invent customer traction, testimonials, employment outcomes, or revenue.
+
+==================================================
+2. DESIGN SYSTEM — NON-NEGOTIABLE
+==================================================
+
+Create an exceptionally polished, premium visual experience combining DARK GLASSMORPHISM with RESTRAINED NEUMORPHISM.
+
+The interface must look like a sophisticated, modern venture-backed African technology startup.
+
+A. Color system
+
+Primary background: #0B1220
+Secondary background: #101927
+Elevated surface: #162235
+Glass surface: rgba(255,255,255,0.055)
+Glass border: rgba(255,255,255,0.11)
+Primary accent: #B8F34A
+Accent hover: #C8FF69
+Primary text: #F5F7FA
+Secondary text: #A6B2C2
+Muted text: #78869A
+Success: accessible green
+Warning: accessible amber
+Error: accessible red
+
+Use lime green selectively for important calls to action, active states, key metrics, progress indicators, and meaningful highlights.
+
+Do not turn the entire interface neon green.
+
+B. Glassmorphism
+
+Use translucent surfaces, layered backgrounds, subtle backdrop blur, delicate one-pixel borders, soft reflections, and restrained shadows.
+
+Apply glass effects to:
+- Main navigation and floating navigation panels.
+- Dashboard summary cards.
+- Search and filter surfaces.
+- Project preview cards.
+- Profile panels.
+- Modal dialogs and popovers.
+- Selected tabs and contextual action panels.
+
+Create genuine depth between the page background, floating panels, content cards, and foreground controls.
+
+Keep body text and important data highly readable. Never sacrifice accessibility for transparency.
+
+C. Neumorphism
+
+Use restrained neumorphic details for:
+- Small icon containers.
+- Secondary action buttons.
+- Segmented controls.
+- Toggle controls.
+- Compact metric indicators.
+
+Avoid excessive inset shadows, low-contrast text, and the dated appearance of fully neumorphic interfaces.
+
+D. Background treatment
+
+Use deep navy gradients, very subtle ambient lime illumination, optional blurred radial light fields, and low-opacity geometric texture.
+
+Keep the background elegant and restrained.
+
+Avoid excessive glowing borders, large distracting animations, and visual clutter.
+
+E. Typography
+
+Use a clean modern sans-serif typeface such as Inter or an equivalent available font.
+
+Establish a clear hierarchy:
+- Large, confident landing-page headlines.
+- Compact dashboard headings.
+- Readable body copy.
+- Clear labels and metadata.
+- Monospaced or tabular numerals where useful for metrics.
+
+F. Components
+
+Create reusable components for:
+- Primary and secondary buttons.
+- Glass cards.
+- Form controls.
+- Search fields.
+- Skill chips.
+- Status badges.
+- Profile cards.
+- Project cards.
+- Progress indicators.
+- Empty states.
+- Loading skeletons.
+- Confirmation dialogs.
+- Notifications.
+- Tables and pagination.
+- Error messages.
+
+G. Responsive design
+
+Design mobile-first while delivering an excellent desktop experience.
+
+Desktop:
+Use a refined sidebar and content workspace for authenticated dashboards.
+
+Mobile:
+Use compact navigation, appropriately sized touch targets, stacked cards, and a simple bottom navigation or accessible mobile menu.
+
+Avoid horizontal overflow and desktop-only interactions.
+
+Respect reduced-motion preferences and provide accessible keyboard focus states.
+
+==================================================
+3. PUBLIC LANDING PAGE
+==================================================
+
+Build a premium marketing website that immediately communicates the product's value.
+
+Navigation:
+- KaziLink logo.
+- Discover Talent.
+- Find Work.
+- How It Works.
+- For Businesses.
+- Sign In.
+- Get Started.
+
+Hero section:
+Headline: "Your Skills Deserve Real Opportunities."
+
+Supporting copy:
+"Connect with businesses that need your skills. Deliver meaningful work, build your portfolio, and grow your professional future."
+
+Primary CTA: Find Opportunities.
+Secondary CTA: Hire Digital Talent.
+
+Include a sophisticated visual composition showing a realistic talent marketplace dashboard, project cards, skills profiles, and a subtle glassmorphism treatment.
+
+Do not use fabricated testimonials, fake client logos, or invented user statistics.
+
+Below the hero, include:
+
+1. A clear explanation of the employment and business problem.
+2. How KaziLink works in three steps.
+3. Digital service categories.
+4. A demonstration of evidence-based talent profiles.
+5. The project delivery workflow.
+6. Business and talent benefits.
+7. Trust, safety, and verification principles.
+8. Frequently asked questions.
+9. A final registration call to action.
+10. A professional footer with contact, privacy, terms, and support links.
+
+Use realistic sample content only when clearly marked as demonstration data.
+
+==================================================
+4. USER ROLES AND AUTHENTICATION
+==================================================
+
+Implement three distinct user roles.
+
+ROLE A: TALENT
+
+Talent can:
+- Register and sign in.
+- Create a professional profile.
+- Add skills and experience.
+- Upload or link portfolio evidence.
+- Specify availability and preferred work categories.
+- Discover opportunities.
+- Apply to projects.
+- Track applications.
+- Manage active engagements.
+- Submit deliverables.
+- Receive feedback.
+- Review completed engagements.
+- Build a portfolio of verified work.
+
+ROLE B: BUSINESS
+
+Businesses can:
+- Register and create a business profile.
+- Submit appropriate verification information.
+- Create and manage project listings.
+- Specify budgets, deadlines, scope, deliverables, and revision limits.
+- Review applications.
+- Shortlist suitable candidates.
+- Select talent.
+- Agree on project terms.
+- Review submitted work.
+- Request revisions within agreed terms.
+- Accept completed work.
+- Leave feedback after a legitimate engagement.
+
+ROLE C: ADMINISTRATOR
+
+Administrators can:
+- Review business verification requests.
+- Moderate projects and user-generated content.
+- Review reports.
+- Investigate suspected fraud.
+- Suspend or restrict accounts where justified.
+- Manage categories and platform settings.
+- Inspect platform activity and aggregate analytics.
+- Review audit logs.
+
+Implement role-aware routing and navigation.
+
+IMPORTANT SECURITY REQUIREMENT:
+Frontend role checks are not sufficient. Enforce authorization on the server or through supported database security policies.
+
+Users must never be able to access or modify another user's private records by manipulating URLs or client-side requests.
+
+==================================================
+5. TALENT EXPERIENCE
+==================================================
+
+Build a premium talent dashboard with:
+
+- Welcome panel.
+- Profile completeness.
+- Skills and evidence.
+- Recommended opportunities.
+- Recent applications.
+- Active projects.
+- Upcoming deadlines.
+- Completed engagements.
+- Client feedback.
+- Portfolio management.
+- Account and privacy settings.
+
+Talent profile fields:
+- Display name.
+- Professional headline.
+- Biography.
+- Location.
+- Languages.
+- Skills.
+- Portfolio links.
+- Work samples.
+- Availability.
+- Preferred project categories.
+- Relevant experience.
+- Completed project history.
+
+Allow users to demonstrate skills with work samples rather than relying only on self-declared proficiency.
+
+Do not imply that identity, qualifications, employment, or skills have been verified without a corresponding real verification process.
+
+Use clear privacy controls for personal information.
+
+==================================================
+6. BUSINESS EXPERIENCE
+==================================================
+
+Build a professional business dashboard with:
+
+- Business overview.
+- Post a Project.
+- Active projects.
+- Applications received.
+- Shortlisted candidates.
+- Current engagements.
+- Deliverables awaiting review.
+- Completed projects.
+- Talent discovery.
+- Business profile and verification.
+- Billing or fee history when a genuine payment system exists.
+
+Project creation form:
+- Project title.
+- Service category.
+- Detailed brief.
+- Required skills.
+- Budget and currency.
+- Delivery deadline.
+- Deliverables.
+- Revision allowance.
+- Required experience.
+- Remote or location-based arrangement.
+- Application deadline.
+- Payment terms.
+- Project visibility.
+
+Validate required fields and display useful error messages.
+
+Provide preview, save draft, publish, edit, pause, close, and cancel actions where appropriate.
+
+Require clear confirmation for consequential actions.
+
+==================================================
+7. DIGITAL SERVICE CATEGORIES
+==================================================
+
+Launch with a narrow selection of categories:
+
+1. Website development and setup.
+2. Graphic design and brand assets.
+3. Social media content and design.
+4. Basic IT support.
+5. Online catalogue and e-commerce setup.
+6. Spreadsheet and administrative support.
+
+The initial pilot should prioritize two categories selected through customer research.
+
+Use reusable category records rather than hardcoding categories throughout the application.
+
+Each project should support relevant skills, realistic budget expectations, scope, deadlines, and deliverables.
+
+==================================================
+8. PROJECT DISCOVERY AND APPLICATIONS
+==================================================
+
+Build a functional project discovery experience with:
+- Search.
+- Category filters.
+- Budget filters.
+- Deadline information.
+- Remote or location filters.
+- Required skills.
+- Clear project status.
+- Sorting and pagination.
+
+Each project card should show:
+- Title.
+- Business name and verification status.
+- Project category.
+- Budget and currency.
+- Required skills.
+- Deadline.
+- Short description.
+- Application status where relevant.
+
+Project details must show the full brief and expectations before an application is submitted.
+
+Application workflow:
+1. Talent reviews the project.
+2. Talent submits a proposal.
+3. The business receives the application.
+4. The business reviews and shortlists candidates.
+5. The business selects a candidate.
+6. The selected candidate confirms the engagement.
+7. Other candidates receive an appropriate status update.
+
+Prevent duplicate applications where inappropriate and ensure that closed projects cannot receive new applications.
+
+Use explicit, understandable statuses rather than arbitrary numeric codes in the interface.
+
+==================================================
+9. THE PROOF-TO-WORK SYSTEM
+==================================================
+
+This is the core product differentiator.
+
+Build a structured process connecting claimed skills to evidence and completed work.
+
+The workflow:
+
+1. Talent lists relevant skills.
+2. Talent attaches a work sample or portfolio link.
+3. A business posts a project with explicit requirements.
+4. The system identifies potentially suitable candidates using transparent filters.
+5. The founder or business reviews candidate evidence.
+6. A real engagement is agreed.
+7. Talent submits the required deliverables.
+8. The business reviews the deliverables against agreed acceptance criteria.
+9. Revisions are handled within the agreed scope.
+10. Completion is recorded.
+11. Eligible participants can submit feedback.
+12. The completed engagement appears in the talent's professional history.
+
+Distinguish carefully between:
+- Self-declared skill.
+- Portfolio evidence supplied.
+- Identity checked.
+- Business verified.
+- Engagement completed.
+- Client feedback received.
+
+Each status must reflect a real event and a defined process.
+
+Do not use AI to make unexplainable hiring decisions or automatically reject candidates based on protected characteristics.
+
+Start with transparent, human-reviewed matching.
+
+==================================================
+10. PROJECT WORKSPACE
+==================================================
+
+Each engagement should have a dedicated workspace containing:
+
+- Project summary.
+- Business and talent details.
+- Agreed scope.
+- Agreed budget.
+- Currency.
+- Deadline.
+- Deliverables.
+- Milestones when required.
+- Revision allowance.
+- Submission history.
+- Feedback and comments.
+- Current status.
+- Completion confirmation.
+- Report or dispute action.
+- Payment status only where verifiable.
+
+Use a clear workflow:
+Draft → Published → Applications Open → Shortlisted → Selected → In Progress → Submitted → Revision Requested or Accepted → Completed.
+
+Support cancellation and dispute statuses with appropriate permissions.
+
+Do not permit arbitrary transitions that bypass necessary checks.
+
+Maintain an audit record for significant changes to project scope, deadlines, completion and payment status.
+
+Do not claim to offer escrow or automated payments without a properly integrated, tested, and legally appropriate payment solution.
+
+==================================================
+11. ADMINISTRATIVE CONSOLE
+==================================================
+
+Create a separate, protected administrative workspace.
+
+Include:
+- Overview metrics based on actual stored records.
+- User management.
+- Business verification queue.
+- Project moderation.
+- Reports and disputes.
+- Service category management.
+- Engagement history.
+- Activity logs.
+- Basic platform analytics.
+- Configuration settings.
+
+Use empty states when no data exists.
+
+Never display invented numbers as live production metrics.
+
+Apply least-privilege access and record important administrative actions.
+
+==================================================
+12. DATA MODEL AND BACKEND
+==================================================
+
+First inspect the existing AppDeploy environment and determine which database, authentication, storage, and server-side capabilities it actually supports.
+
+Use its supported integrations rather than inventing tools or endpoints.
+
+Create a normalized data model for:
+
+- Users.
+- Talent profiles.
+- Business profiles.
+- Skills.
+- Talent skills and evidence.
+- Projects.
+- Applications.
+- Engagements.
+- Deliverables.
+- Milestones where needed.
+- Reviews.
+- Verification requests.
+- Reports and disputes.
+- Notifications.
+- Audit logs.
+- Payment records only where a genuine payment workflow exists.
+
+Use immutable user IDs and explicit relationships.
+
+Include:
+- Created and updated timestamps.
+- Appropriate indexes.
+- Unique constraints.
+- Referential integrity.
+- Input validation.
+- Pagination.
+- Safe file handling.
+- Server-side authorization.
+- Secure secrets management.
+- Useful error handling.
+
+Enforce access rules so that:
+- Users can manage only their own profiles.
+- Businesses can manage only their own projects and engagements.
+- Talent can manage only their own private applications and submissions.
+- Reviews can only be submitted by eligible engagement participants.
+- Administrative privileges cannot be assigned by ordinary users.
+
+Use database transactions or equivalent safeguards for important state transitions when supported.
+
+Never expose passwords, authentication tokens, secret keys, private verification documents, or other sensitive information.
+
+If the environment lacks a required capability, explain the limitation and implement a safe alternative or identify the necessary dependency.
+
+==================================================
+13. PAYMENTS AND REVENUE MODEL
+==================================================
+
+The initial business model should prioritize revenue from businesses rather than charging job seekers for basic access to opportunities.
+
+Potential revenue streams:
+
+1. A clearly disclosed fee on successfully completed projects.
+2. Business subscriptions for repeat hiring and management tools.
+3. Recruitment and talent sourcing services.
+4. Institutional partnerships and structured work-experience programmes.
+
+Do not implement every monetization feature immediately.
+
+For the MVP:
+- Display the agreed project budget and currency.
+- Record agreed commercial terms.
+- Show payment status only when supported by a real, verifiable process.
+- Maintain a clear distinction between project value and platform revenue.
+- Avoid charging hidden fees.
+
+Before processing third-party payments or holding funds, establish applicable legal and regulatory requirements and select an appropriate licensed provider.
+
+==================================================
+14. NOTIFICATIONS AND COMMUNICATION
+==================================================
+
+Provide useful in-app notifications for:
+- New applications.
+- Shortlisting.
+- Candidate selection.
+- Engagement changes.
+- Deliverable submissions.
+- Revision requests.
+- Completion.
+- Reviews.
+- Verification decisions.
+
+Use the available notification infrastructure.
+
+If email or SMS delivery is unavailable, show accurate in-app status and identify the missing integration rather than pretending messages have been sent.
+
+Build privacy-conscious communication around project requirements.
+
+Do not expose private contact information unnecessarily.
+
+==================================================
+15. TRUST, SAFETY AND PRIVACY
+==================================================
+
+Implement:
+- Business verification workflows.
+- Suspicious listing reporting.
+- User reporting.
+- Clear project terms.
+- Transparent fees.
+- Anti-spam measures appropriate to the platform.
+- Moderation controls.
+- Secure file permissions.
+- Privacy-conscious profile visibility.
+- Account deactivation and appropriate data-deletion workflows.
+- Clear terms, privacy notices and dispute procedures.
+
+Do not promise perfect fraud prevention.
+
+Do not collect sensitive personal information without a justified purpose.
+
+Design the service with applicable Kenyan data protection requirements in mind and obtain appropriate legal review before production launch.
+
+==================================================
+16. ANALYTICS AND INVESTOR READINESS
+==================================================
+
+Create an internal analytics view based on genuine platform activity.
+
+Track:
+- Registered talent.
+- Verified businesses.
+- Active projects.
+- Applications per project.
+- Time to first suitable match.
+- Projects started.
+- Projects completed.
+- Completion rate.
+- Repeat business rate.
+- Report and dispute rate.
+- Worker earnings where verifiable.
+- Gross project value.
+- Platform revenue.
+- Operating costs where recorded.
+
+Distinguish gross project value from company revenue.
+
+Never count registrations as proof of successful employment outcomes.
+
+Do not fabricate traction, retention, revenue, testimonials, partnerships, or funding commitments.
+
+Build the product so the founder can later prepare a credible investor presentation using actual evidence.
+
+==================================================
+17. ENGINEERING QUALITY AND TESTING
+==================================================
+
+Test the full application across desktop and mobile.
+
+Verify:
+- Registration and login.
+- Password recovery if supported.
+- Role-based access.
+- Profile creation and editing.
+- Project publication.
+- Project discovery.
+- Application submission.
+- Shortlisting and selection.
+- Engagement creation.
+- Deliverable submission.
+- Revision and acceptance.
+- Review eligibility.
+- Administrative moderation.
+- Unauthorized-access prevention.
+- Input validation.
+- Error handling.
+- Responsive navigation.
+- Keyboard accessibility.
+- Loading, empty and failure states.
+
+Remove dead buttons, fake interactions, placeholder links, and misleading success messages.
+
+Ensure important actions persist data and produce accurate feedback.
+
+Use a consistent component system rather than duplicating interface logic.
+
+==================================================
+18. BUILD IN MILESTONES
+==================================================
+
+Do not attempt to implement everything in one uncontrolled generation.
+
+MILESTONE 1 — FOUNDATION
+Build the design system, responsive landing page, navigation, authentication entry points, component library and application shell.
+
+MILESTONE 2 — IDENTITY AND DATA
+Implement real authentication, user roles, talent profiles, business profiles, persistent storage and access controls.
+
+MILESTONE 3 — MARKETPLACE
+Implement categories, project creation, discovery, filtering, applications and shortlisting.
+
+MILESTONE 4 — ENGAGEMENTS
+Implement selected candidates, agreed project terms, deliverables, revisions, completion and eligible reviews.
+
+MILESTONE 5 — ADMINISTRATION
+Implement verification workflows, moderation, reporting, audit records and basic analytics.
+
+MILESTONE 6 — PILOT READINESS
+Test the full workflow, correct defects, inspect security, verify mobile usability, and prepare a controlled pilot.
+
+After each milestone, report:
+- What actually works.
+- What remains incomplete.
+- What backend integrations are configured.
+- What tests were performed.
+- What limitations remain.
+- The next recommended step.
+
+Preserve working features during subsequent iterations.
+
+==================================================
+19. FINAL ACCEPTANCE CRITERIA
+==================================================
+
+The first meaningful MVP is complete only when:
+
+1. A user can register and access the correct role-specific experience.
+2. A business can create and publish a real project.
+3. Talent can browse projects and submit applications.
+4. A business can review applicants and select a candidate.
+5. Both parties can access the correct engagement information.
+6. Talent can submit deliverables.
+7. The business can request revisions or accept the deliverables.
+8. Completion and eligible feedback are recorded correctly.
+9. An administrator can moderate users and listings.
+10. Unauthorized access is blocked.
+11. Data persists across sessions.
+12. Core workflows function on mobile and desktop.
+13. Errors and empty states are handled clearly.
+14. No fake production claims or simulated payments are presented as real.
+
+The long-term vision is to become trusted work infrastructure for emerging African talent and the businesses that need their skills.
+
+The immediate goal is smaller and more important: validate the problem, launch a reliable MVP, complete real paid projects, learn from users, and prove that businesses return.
+
+Start by inspecting the AppDeploy environment and implementing MILESTONE 1. Do not skip environment inspection, invent integrations, or claim completion of features that have not been implemented and tested.

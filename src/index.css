@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --color-primary-bg: #0B1220;
+  --color-secondary-bg: #101927;
+  --color-elevated: #162235;
+  --color-accent: #B8F34A;
+  --color-accent-hover: #C8FF69;
+  --color-text-primary: #F5F7FA;
+  --color-text-secondary: #A6B2C2;
+  --color-text-muted: #78869A;
+}
+
+/* Glassmorphism Styles */
+.glass-card {
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.glass-card-elevated {
+  background: rgba(22, 34, 53, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+.glass-card-subtle {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-nav {
+  background: rgba(11, 18, 32, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+/* Restrained Neumorphic Details */
+.neumorphic-inset {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -1px -1px 3px rgba(255, 255, 255, 0.06);
+}
+
+.neumorphic-convex {
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35), -1px -1px 4px rgba(255, 255, 255, 0.04);
+}
+
+.neumorphic-button {
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4), -1px -1px 3px rgba(255, 255, 255, 0.06);
+}
+
+/* Background Ambient Glow */
+.bg-ambient-glow {
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(184, 243, 74, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(56, 189, 248, 0.03) 0%, transparent 45%);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0B1220;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(184, 243, 74, 0.4);
+}

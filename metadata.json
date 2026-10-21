@@ -1,0 +1,6 @@
+{
+  "name": "KaziLink | Digital Talent Marketplace",
+  "description": "Connecting emerging African talent with businesses for verified, structured digital work.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
