@@ -218,8 +218,51 @@ export interface InAppNotification {
   userId: string;
   title: string;
   message: string;
-  type: 'application' | 'shortlist' | 'selection' | 'deliverable' | 'revision' | 'completion' | 'verification';
+  type: 'application' | 'shortlist' | 'selection' | 'deliverable' | 'revision' | 'completion' | 'verification' | 'invitation';
   linkTarget?: string;
   isRead: boolean;
   createdAt: string;
+}
+
+export interface ProjectInvitation {
+  id: string;
+  projectId: string;
+  projectTitle: string;
+  projectCategory: string;
+  projectBudgetKES: number;
+  businessId: string;
+  businessName: string;
+  businessVerified: boolean;
+  talentId: string;
+  talentName: string;
+  personalMessage: string;
+  status: 'pending' | 'accepted' | 'declined';
+  createdAt: string;
+}
+
+export type ActivityType = 
+  | 'application_status_changed'
+  | 'project_invitation'
+  | 'deliverable_event'
+  | 'revision_event'
+  | 'completion_event'
+  | 'review_event'
+  | 'verification_event'
+  | 'project_event';
+
+export interface ActivityEvent {
+  id: string;
+  userId: string;
+  type: ActivityType;
+  title: string;
+  description: string;
+  timestamp: string;
+  isRead: boolean;
+  actorName?: string;
+  actorRole?: UserRole;
+  actorAvatar?: string;
+  targetId?: string;
+  linkTarget?: 'project' | 'engagement' | 'applications' | 'verification';
+  badgeText?: string;
+  badgeTone?: 'accent' | 'success' | 'warning' | 'info';
 }

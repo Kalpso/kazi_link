@@ -14,7 +14,9 @@ import {
   DeliverableSubmission,
   RevisionRequest,
   Review,
-  TalentSkill
+  TalentSkill,
+  ProjectInvitation,
+  ActivityEvent
 } from '../types';
 import {
   SEED_USERS,
@@ -25,7 +27,9 @@ import {
   SEED_ENGAGEMENTS,
   SEED_CATEGORIES,
   SEED_AUDIT_LOGS,
-  SEED_REPORTS
+  SEED_REPORTS,
+  SEED_INVITATIONS,
+  SEED_ACTIVITIES
 } from '../data/seedData';
 
 const STORAGE_KEY = 'kazilink_state_v1';
@@ -42,6 +46,8 @@ interface AppContextType {
   auditLogs: AuditLog[];
   reports: ReportItem[];
   notifications: InAppNotification[];
+  activities: ActivityEvent[];
+  invitations: ProjectInvitation[];
   
   // Navigation / View State
   activeView: string;
@@ -80,6 +86,13 @@ interface AppContextType {
   moderateProjectStatus: (projectId: string, newStatus: Project['status'], reason: string) => void;
   submitReport: (targetType: 'project' | 'user' | 'engagement', targetId: string, targetTitle: string, reason: string, details: string) => void;
   resolveReport: (reportId: string, resolutionNotes: string) => void;
+
+  // Activity & Invitation Actions
+  addActivity: (event: Omit<ActivityEvent, 'id' | 'timestamp'>) => void;
+  markActivityAsRead: (activityId: string) => void;
+  markAllActivitiesAsRead: () => void;
+  sendProjectInvitation: (projectId: string, talentId: string, personalMessage: string) => boolean;
+  respondToInvitation: (invitationId: string, accept: boolean) => void;
 
   // Utilities
   resetToDefaults: () => void;
@@ -144,6 +157,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [notifications, setNotifications] = useState<InAppNotification[]>([]);
 
+  const [invitations, setInvitations] = useState<ProjectInvitation[]>(() => {
+    const saved = localStorage.getItem(`${STORAGE_KEY}_invitations`);
+    return saved ? JSON.parse(saved) : SEED_INVITATIONS;
+  });
+
+  const [activities, setActivities] = useState<ActivityEvent[]>(() => {
+    const saved = localStorage.getItem(`${STORAGE_KEY}_activities`);
+    return saved ? JSON.parse(saved) : SEED_ACTIVITIES;
+  });
+
   // Navigation states
   const [activeView, setActiveView] = useState<string>('landing');
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
@@ -162,8 +185,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem(`${STORAGE_KEY}_categories`, JSON.stringify(categories));
     localStorage.setItem(`${STORAGE_KEY}_audit_logs`, JSON.stringify(auditLogs));
     localStorage.setItem(`${STORAGE_KEY}_reports`, JSON.stringify(reports));
+    localStorage.setItem(`${STORAGE_KEY}_invitations`, JSON.stringify(invitations));
+    localStorage.setItem(`${STORAGE_KEY}_activities`, JSON.stringify(activities));
     setIsInitialized(true);
-  }, [users, currentUserId, talentProfiles, businessProfiles, projects, applications, engagements, categories, auditLogs, reports]);
+  }, [users, currentUserId, talentProfiles, businessProfiles, projects, applications, engagements, categories, auditLogs, reports, invitations, activities]);
 
   const currentUser = users.find(u => u.id === currentUserId) || null;
 
@@ -191,6 +216,130 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       createdAt: new Date().toISOString()
     };
     setNotifications(prev => [newNotif, ...prev]);
+  };
+
+  const addActivity = (event: Omit<ActivityEvent, 'id' | 'timestamp'>) => {
+    const newActivity: ActivityEvent = {
+      ...event,
+      id: `act-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      timestamp: new Date().toISOString()
+    };
+    setActivities(prev => [newActivity, ...prev]);
+  };
+
+  const markActivityAsRead = (activityId: string) => {
+    setActivities(prev => prev.map(a => a.id === activityId ? { ...a, isRead: true } : a));
+  };
+
+  const markAllActivitiesAsRead = () => {
+    if (!currentUser) return;
+    setActivities(prev => prev.map(a => a.userId === currentUser.id ? { ...a, isRead: true } : a));
+  };
+
+  const sendProjectInvitation = (projectId: string, talentId: string, personalMessage: string): boolean => {
+    const project = projects.find(p => p.id === projectId);
+    const talentUser = users.find(u => u.id === talentId);
+    if (!project || !talentUser || !currentUser) return false;
+
+    const bizProfile = businessProfiles[currentUser.id];
+
+    const newInvitation: ProjectInvitation = {
+      id: `inv-${Date.now()}`,
+      projectId: project.id,
+      projectTitle: project.title,
+      projectCategory: project.category,
+      projectBudgetKES: project.budgetKES,
+      businessId: currentUser.id,
+      businessName: bizProfile ? bizProfile.companyName : currentUser.displayName,
+      businessVerified: bizProfile ? bizProfile.verificationStatus === 'verified' : false,
+      talentId: talentUser.id,
+      talentName: talentUser.displayName,
+      personalMessage: personalMessage || 'We would like to invite you to submit a proposal for this project.',
+      status: 'pending',
+      createdAt: new Date().toISOString()
+    };
+
+    setInvitations(prev => [newInvitation, ...prev]);
+
+    // Activity for Talent
+    addActivity({
+      userId: talentUser.id,
+      type: 'project_invitation',
+      title: 'New Project Invitation Received',
+      description: `${newInvitation.businessName} invited you to apply for "${project.title}".`,
+      isRead: false,
+      actorName: newInvitation.businessName,
+      actorRole: 'business',
+      targetId: project.id,
+      linkTarget: 'project',
+      badgeText: `KES ${project.budgetKES.toLocaleString()} Invitation`,
+      badgeTone: 'accent'
+    });
+
+    // Activity for Business
+    addActivity({
+      userId: currentUser.id,
+      type: 'project_invitation',
+      title: 'Project Invitation Sent',
+      description: `Sent invitation to ${talentUser.displayName} for project "${project.title}".`,
+      isRead: true,
+      actorName: currentUser.displayName,
+      actorRole: 'business',
+      targetId: project.id,
+      linkTarget: 'project',
+      badgeText: 'Invited',
+      badgeTone: 'info'
+    });
+
+    addNotification(talentUser.id, 'New Project Invitation', `${newInvitation.businessName} invited you to "${project.title}"`, 'invitation');
+    recordAuditLog('Project Invitation Sent', `Business ${currentUser.displayName} invited ${talentUser.displayName} to project "${project.title}"`, 'project');
+    return true;
+  };
+
+  const respondToInvitation = (invitationId: string, accept: boolean) => {
+    const invitation = invitations.find(i => i.id === invitationId);
+    if (!invitation || !currentUser) return;
+
+    setInvitations(prev => prev.map(inv => {
+      if (inv.id === invitationId) {
+        return { ...inv, status: accept ? 'accepted' : 'declined' };
+      }
+      return inv;
+    }));
+
+    if (accept) {
+      addActivity({
+        userId: invitation.businessId,
+        type: 'project_invitation',
+        title: 'Project Invitation Accepted',
+        description: `${invitation.talentName} accepted your invitation to "${invitation.projectTitle}".`,
+        isRead: false,
+        actorName: invitation.talentName,
+        actorRole: 'talent',
+        targetId: invitation.projectId,
+        linkTarget: 'project',
+        badgeText: 'Accepted',
+        badgeTone: 'success'
+      });
+      addNotification(invitation.businessId, 'Invitation Accepted', `${invitation.talentName} accepted your invitation for "${invitation.projectTitle}"`, 'invitation');
+      setSelectedProjectId(invitation.projectId);
+    } else {
+      addActivity({
+        userId: invitation.businessId,
+        type: 'project_invitation',
+        title: 'Project Invitation Declined',
+        description: `${invitation.talentName} declined the invitation to "${invitation.projectTitle}".`,
+        isRead: false,
+        actorName: invitation.talentName,
+        actorRole: 'talent',
+        targetId: invitation.projectId,
+        linkTarget: 'project',
+        badgeText: 'Declined',
+        badgeTone: 'warning'
+      });
+    }
+
+    recordAuditLog('Invitation Response', `${currentUser.displayName} ${accept ? 'accepted' : 'declined'} invitation for "${invitation.projectTitle}"`, 'project');
   };
 
   const switchUser = (userId: string) => {
@@ -366,12 +515,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // Notify Business
     addNotification(project.businessId, 'New Application Received', `${currentUser.displayName} applied for "${project.title}"`, 'application');
 
+    // Add activity events
+    addActivity({
+      userId: project.businessId,
+      type: 'application_status_changed',
+      title: 'New Proposal Received',
+      description: `${currentUser.displayName} submitted a proposal with proof-to-work samples for "${project.title}".`,
+      isRead: false,
+      actorName: currentUser.displayName,
+      actorRole: 'talent',
+      targetId: project.id,
+      linkTarget: 'project',
+      badgeText: 'New Proposal',
+      badgeTone: 'accent'
+    });
+
+    addActivity({
+      userId: currentUser.id,
+      type: 'application_status_changed',
+      title: 'Proposal Submitted',
+      description: `You applied to "${project.title}" (Proposed: KES ${proposedRateKES.toLocaleString()} in ${proposedTimelineDays} days).`,
+      isRead: true,
+      actorName: currentUser.displayName,
+      actorRole: 'talent',
+      targetId: project.id,
+      linkTarget: 'applications',
+      badgeText: 'Submitted',
+      badgeTone: 'info'
+    });
+
     recordAuditLog('Application Submitted', `${currentUser.displayName} submitted proposal for project "${project.title}"`, 'project');
     return true;
   };
 
   // Business: Shortlist
   const shortlistApplication = (applicationId: string) => {
+    const targetApp = applications.find(a => a.id === applicationId);
     setApplications(prev => prev.map(a => {
       if (a.id === applicationId) {
         addNotification(a.talentId, 'Application Shortlisted', `Your application for "${a.projectTitle}" has been shortlisted!`, 'shortlist');
@@ -379,6 +558,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
       return a;
     }));
+
+    if (targetApp) {
+      addActivity({
+        userId: targetApp.talentId,
+        type: 'application_status_changed',
+        title: 'Proposal Shortlisted',
+        description: `Your application for "${targetApp.projectTitle}" was shortlisted by ${currentUser?.displayName || 'the client'}.`,
+        isRead: false,
+        actorName: currentUser?.displayName || 'Client',
+        actorRole: 'business',
+        targetId: targetApp.projectId,
+        linkTarget: 'applications',
+        badgeText: 'Shortlisted',
+        badgeTone: 'info'
+      });
+    }
+
     recordAuditLog('Application Shortlisted', `Application ${applicationId} moved to shortlisted candidates`, 'project');
   };
 
@@ -425,6 +621,35 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // Notify Talent
     addNotification(application.talentId, 'You were Selected!', `Congratulations! ${project.businessName} selected you for "${project.title}". Workspace is now active.`, 'selection');
 
+    // Add activity events
+    addActivity({
+      userId: application.talentId,
+      type: 'application_status_changed',
+      title: 'Candidate Selected & Engagement Initiated',
+      description: `${project.businessName} selected your proposal for "${project.title}". Milestone escrow commitment: KES ${newEngagement.agreedBudgetKES.toLocaleString()}.`,
+      isRead: false,
+      actorName: project.businessName,
+      actorRole: 'business',
+      targetId: newEngagement.id,
+      linkTarget: 'engagement',
+      badgeText: 'Contract Active',
+      badgeTone: 'success'
+    });
+
+    addActivity({
+      userId: project.businessId,
+      type: 'application_status_changed',
+      title: `Selected ${application.talentName}`,
+      description: `Initiated active milestone engagement for "${project.title}". Workspace is ready.`,
+      isRead: true,
+      actorName: currentUser.displayName,
+      actorRole: 'business',
+      targetId: newEngagement.id,
+      linkTarget: 'engagement',
+      badgeText: 'Contract Active',
+      badgeTone: 'success'
+    });
+
     recordAuditLog('Candidate Selected & Engagement Created', `Selected ${application.talentName} for project "${project.title}". Milestone commitment: KES ${newEngagement.agreedBudgetKES.toLocaleString()}`, 'engagement');
     
     setSelectedEngagementId(newEngagement.id);
@@ -447,8 +672,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       status: 'submitted'
     };
 
+    let targetEng: Engagement | undefined;
+
     setEngagements(prev => prev.map(eng => {
       if (eng.id === engagementId) {
+        targetEng = eng;
         // Notify business
         addNotification(eng.businessId, 'Deliverable Submitted', `${eng.talentName} submitted deliverables for review on "${eng.projectTitle}"`, 'deliverable');
         return {
@@ -459,6 +687,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
       return eng;
     }));
+
+    if (targetEng) {
+      const eng = targetEng;
+      addActivity({
+        userId: eng.businessId,
+        type: 'deliverable_event',
+        title: 'Deliverables Ready for Review',
+        description: `${eng.talentName} submitted deliverables for "${eng.projectTitle}": ${title}.`,
+        isRead: false,
+        actorName: eng.talentName,
+        actorRole: 'talent',
+        targetId: eng.id,
+        linkTarget: 'engagement',
+        badgeText: 'Review Required',
+        badgeTone: 'warning'
+      });
+
+      addActivity({
+        userId: eng.talentId,
+        type: 'deliverable_event',
+        title: 'Milestone Deliverable Submitted',
+        description: `You submitted "${title}" for "${eng.projectTitle}".`,
+        isRead: true,
+        actorName: eng.talentName,
+        actorRole: 'talent',
+        targetId: eng.id,
+        linkTarget: 'engagement',
+        badgeText: 'Under Review',
+        badgeTone: 'info'
+      });
+    }
 
     recordAuditLog('Deliverable Submitted', `Deliverable "${title}" submitted for engagement ${engagementId}`, 'engagement');
   };
@@ -472,8 +731,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       specificPoints
     };
 
+    let targetEng: Engagement | undefined;
+
     setEngagements(prev => prev.map(eng => {
       if (eng.id === engagementId) {
+        targetEng = eng;
         addNotification(eng.talentId, 'Revision Requested', `${eng.businessName} requested adjustments on "${eng.projectTitle}"`, 'revision');
         return {
           ...eng,
@@ -484,6 +746,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
       return eng;
     }));
+
+    if (targetEng) {
+      const eng = targetEng;
+      addActivity({
+        userId: eng.talentId,
+        type: 'revision_event',
+        title: 'Revision Feedback on Milestone',
+        description: `${eng.businessName} requested adjustments on "${eng.projectTitle}".`,
+        isRead: false,
+        actorName: eng.businessName,
+        actorRole: 'business',
+        targetId: eng.id,
+        linkTarget: 'engagement',
+        badgeText: 'Revision Requested',
+        badgeTone: 'warning'
+      });
+    }
 
     recordAuditLog('Revision Requested', `Revision requested on engagement ${engagementId}`, 'engagement');
   };
@@ -538,6 +817,35 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       });
 
       addNotification(eng.talentId, 'Project Accepted & Completed', `Deliverables accepted for "${eng.projectTitle}". Funds released. Please leave feedback!`, 'completion');
+      
+      addActivity({
+        userId: eng.talentId,
+        type: 'completion_event',
+        title: 'Milestone Accepted & Payment Released',
+        description: `${eng.businessName} accepted deliverables for "${eng.projectTitle}". KES ${eng.agreedBudgetKES.toLocaleString()} disbursed.`,
+        isRead: false,
+        actorName: eng.businessName,
+        actorRole: 'business',
+        targetId: eng.id,
+        linkTarget: 'engagement',
+        badgeText: 'Completed',
+        badgeTone: 'success'
+      });
+
+      addActivity({
+        userId: eng.businessId,
+        type: 'completion_event',
+        title: 'Engagement Accepted & Completed',
+        description: `Completed "${eng.projectTitle}" with ${eng.talentName}. Testimonial feedback unlocked.`,
+        isRead: true,
+        actorName: currentUser ? currentUser.displayName : 'Business',
+        actorRole: 'business',
+        targetId: eng.id,
+        linkTarget: 'engagement',
+        badgeText: 'Completed',
+        badgeTone: 'success'
+      });
+
       recordAuditLog('Engagement Completed', `Engagement ${eng.id} accepted and completed. KES ${eng.agreedBudgetKES.toLocaleString()} verified.`, 'engagement');
     }
   };
@@ -581,6 +889,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
       return eng;
     }));
+
+    const targetEngagement = engagements.find(e => e.id === engagementId);
+
+    if (isBusiness && targetEngagement) {
+      addActivity({
+        userId: targetEngagement.talentId,
+        type: 'review_event',
+        title: 'New Verified Client Testimonial',
+        description: `${currentUser.displayName} left a ${rating}-star verified review: "${comment.substring(0, 75)}..."`,
+        isRead: false,
+        actorName: currentUser.displayName,
+        actorRole: 'business',
+        targetId: targetEngagement.id,
+        linkTarget: 'engagement',
+        badgeText: `${rating} ★ Review`,
+        badgeTone: 'accent'
+      });
+    }
 
     recordAuditLog('Review Submitted', `${currentUser.displayName} submitted ${rating}-star feedback for engagement ${engagementId}`, 'engagement');
   };
@@ -626,6 +952,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // Update their projects
     setProjects(prev => prev.map(p => p.businessId === businessUserId ? { ...p, businessVerified: true } : p));
     addNotification(businessUserId, 'Business Verified', 'Your business profile has been verified! Your project listings now bear the Verified badge.', 'verification');
+
+    addActivity({
+      userId: businessUserId,
+      type: 'verification_event',
+      title: 'Kenya BRS Business Verification Approved',
+      description: 'Your business credentials have been verified. Verified Kenyan SME trust badge is now displayed on your listings.',
+      isRead: false,
+      actorName: 'KaziLink Governance',
+      actorRole: 'admin',
+      linkTarget: 'verification',
+      badgeText: 'Verified SME',
+      badgeTone: 'success'
+    });
+
     recordAuditLog('Business Verified by Admin', `Admin approved business verification for user ${businessUserId}`, 'verification');
   };
 
@@ -729,6 +1069,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCategories(SEED_CATEGORIES);
     setAuditLogs(SEED_AUDIT_LOGS);
     setReports(SEED_REPORTS);
+    setInvitations(SEED_INVITATIONS);
+    setActivities(SEED_ACTIVITIES);
     setActiveView('landing');
   };
 
@@ -746,6 +1088,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         auditLogs,
         reports,
         notifications,
+        activities,
+        invitations,
 
         activeView,
         setActiveView,
@@ -779,6 +1123,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         moderateProjectStatus,
         submitReport,
         resolveReport,
+
+        addActivity,
+        markActivityAsRead,
+        markAllActivitiesAsRead,
+        sendProjectInvitation,
+        respondToInvitation,
 
         resetToDefaults,
         recordAuditLog

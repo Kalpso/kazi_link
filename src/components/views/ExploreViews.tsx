@@ -12,8 +12,10 @@ import {
   Globe, 
   Calendar,
   Lock,
-  ArrowLeft
+  ArrowLeft,
+  Mail
 } from 'lucide-react';
+import { InviteTalentModal } from '../dashboard/InviteTalentModal';
 
 interface ExploreViewsProps {
   view: 'browse_projects' | 'talent_showcase' | 'proof_to_work' | 'pilot_mission';
@@ -26,9 +28,11 @@ export const ExploreViews: React.FC<ExploreViewsProps> = ({
   onSelectProject,
   onOpenAuth
 }) => {
-  const { projects, categories, talentProfiles, users, setActiveView } = useApp();
+  const { currentUser, projects, categories, talentProfiles, users, setActiveView } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedTalentForInvite, setSelectedTalentForInvite] = useState<User | null>(null);
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
   const talentUsers = users.filter(u => u.role === 'talent');
 
@@ -194,6 +198,28 @@ export const ExploreViews: React.FC<ExploreViewsProps> = ({
                       ))}
                     </div>
                   </div>
+
+                  <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                    <span className="text-[11px] text-[#78869A]">
+                      {p.completedEngagementsCount} completed pilot project{p.completedEngagementsCount === 1 ? '' : 's'}
+                    </span>
+                    <button
+                      onClick={() => {
+                        if (!currentUser) {
+                          onOpenAuth('signin', 'business');
+                        } else if (currentUser.role === 'business') {
+                          setSelectedTalentForInvite(u);
+                          setInviteModalOpen(true);
+                        } else {
+                          // Talent viewing other talent: can inspect
+                        }
+                      }}
+                      className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#B8F34A]/10 hover:bg-[#B8F34A] text-[#B8F34A] hover:text-[#0B1220] border border-[#B8F34A]/30 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                    >
+                      <Mail className="w-3.5 h-3.5" />
+                      <span>{currentUser?.role === 'business' ? 'Invite to Project' : 'Hire / Invite'}</span>
+                    </button>
+                  </div>
                 </div>
               );
             })}
@@ -286,6 +312,16 @@ export const ExploreViews: React.FC<ExploreViewsProps> = ({
           </div>
         </div>
       )}
+
+      {/* Invite to Project Modal */}
+      <InviteTalentModal
+        talentUser={selectedTalentForInvite}
+        isOpen={inviteModalOpen}
+        onClose={() => {
+          setInviteModalOpen(false);
+          setSelectedTalentForInvite(null);
+        }}
+      />
     </div>
   );
 };

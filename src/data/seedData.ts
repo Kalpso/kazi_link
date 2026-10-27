@@ -1,4 +1,4 @@
-import { User, TalentProfile, BusinessProfile, Project, Application, Engagement, Category, AuditLog, ReportItem, InAppNotification } from '../types';
+import { User, TalentProfile, BusinessProfile, Project, Application, Engagement, Category, AuditLog, ReportItem, InAppNotification, ProjectInvitation, ActivityEvent } from '../types';
 
 export const SEED_CATEGORIES: Category[] = [
   {
@@ -571,3 +571,226 @@ export const SEED_REPORTS: ReportItem[] = [
     resolutionNotes: 'Account suspended and listing removed by KaziLink Trust & Safety.'
   }
 ];
+
+export const SEED_INVITATIONS: ProjectInvitation[] = [
+  {
+    id: 'inv-1',
+    projectId: 'prj-3',
+    projectTitle: 'Driver Fleet Schedule & Fuel Tracking Spreadsheet with Dashboard',
+    projectCategory: 'Spreadsheets & Admin Support',
+    projectBudgetKES: 22000,
+    businessId: 'usr-biz-2',
+    businessName: 'Kilifi Coastal Logistics',
+    businessVerified: false,
+    talentId: 'usr-talent-1',
+    talentName: 'Amiina Otieno',
+    personalMessage: 'Habari Amiina, we reviewed your verified React & offline tool portfolio. We have 18 trucks running the Mombasa-Nairobi corridor and need your help building an automated Google Sheets operational tracker.',
+    status: 'pending',
+    createdAt: '2026-10-25T14:30:00Z'
+  },
+  {
+    id: 'inv-2',
+    projectId: 'prj-2',
+    projectTitle: 'Brand Packaging & Label System for Organic Fruit Jams',
+    projectCategory: 'Graphic Design & Brand Assets',
+    projectBudgetKES: 30000,
+    businessId: 'usr-biz-1',
+    businessName: 'GreenBoma Organics Ltd',
+    businessVerified: true,
+    talentId: 'usr-talent-2',
+    talentName: 'Brian Kipchoge',
+    personalMessage: 'Hello Brian, we were impressed by your Kericho Valley Tea brand guidelines on your profile. We would like to invite you to submit a proposal for our new fruit jam packaging project.',
+    status: 'pending',
+    createdAt: '2026-10-24T09:15:00Z'
+  }
+];
+
+export const SEED_ACTIVITIES: ActivityEvent[] = [
+  // Talent 1 (Amiina Otieno)
+  {
+    id: 'act-1',
+    userId: 'usr-talent-1',
+    type: 'project_invitation',
+    title: 'New Project Invitation Received',
+    description: 'Kilifi Coastal Logistics invited you to apply for "Driver Fleet Schedule & Fuel Tracking Spreadsheet".',
+    timestamp: '2026-10-25T14:30:00Z',
+    isRead: false,
+    actorName: 'David Mwangi',
+    actorRole: 'business',
+    targetId: 'prj-3',
+    linkTarget: 'project',
+    badgeText: 'KES 22,000 Invitation',
+    badgeTone: 'accent'
+  },
+  {
+    id: 'act-2',
+    userId: 'usr-talent-1',
+    type: 'revision_event',
+    title: 'Revision Feedback on Milestone 1',
+    description: 'GreenBoma Organics reviewed your staging preview and requested 2 minor adjustments (minimum cart threshold and alternate phone input).',
+    timestamp: '2026-10-20T10:15:00Z',
+    isRead: false,
+    actorName: 'Sarah Wanjiku',
+    actorRole: 'business',
+    targetId: 'eng-1',
+    linkTarget: 'engagement',
+    badgeText: 'Revision Requested',
+    badgeTone: 'warning'
+  },
+  {
+    id: 'act-3',
+    userId: 'usr-talent-1',
+    type: 'deliverable_event',
+    title: 'Milestone 1 Deliverables Submitted',
+    description: 'You submitted the staging URL (greenboma-preview.web.app) and GitHub repository branch for client review.',
+    timestamp: '2026-10-19T17:30:00Z',
+    isRead: true,
+    actorName: 'Amiina Otieno',
+    actorRole: 'talent',
+    targetId: 'eng-1',
+    linkTarget: 'engagement',
+    badgeText: 'Under Review',
+    badgeTone: 'info'
+  },
+  {
+    id: 'act-4',
+    userId: 'usr-talent-1',
+    type: 'application_status_changed',
+    title: 'Candidate Selected & Engagement Initiated',
+    description: 'Sarah Wanjiku selected your proposal for "Mobile-Optimized Produce Catalog & Ordering Site". Milestone escrow commitment: KES 45,000.',
+    timestamp: '2026-10-12T14:00:00Z',
+    isRead: true,
+    actorName: 'Sarah Wanjiku',
+    actorRole: 'business',
+    targetId: 'eng-1',
+    linkTarget: 'engagement',
+    badgeText: 'Contract Active',
+    badgeTone: 'success'
+  },
+  {
+    id: 'act-5',
+    userId: 'usr-talent-1',
+    type: 'application_status_changed',
+    title: 'Proposal Shortlisted',
+    description: 'Your application for "Mobile-Optimized Produce Catalog" was moved to the client shortlist.',
+    timestamp: '2026-10-11T16:00:00Z',
+    isRead: true,
+    actorName: 'GreenBoma Organics Ltd',
+    actorRole: 'business',
+    targetId: 'prj-1',
+    linkTarget: 'applications',
+    badgeText: 'Shortlisted',
+    badgeTone: 'info'
+  },
+
+  // Talent 2 (Brian Kipchoge)
+  {
+    id: 'act-6',
+    userId: 'usr-talent-2',
+    type: 'project_invitation',
+    title: 'New Project Invitation Received',
+    description: 'GreenBoma Organics Ltd invited you to apply for "Brand Packaging & Label System for Organic Fruit Jams".',
+    timestamp: '2026-10-24T09:15:00Z',
+    isRead: false,
+    actorName: 'Sarah Wanjiku',
+    actorRole: 'business',
+    targetId: 'prj-2',
+    linkTarget: 'project',
+    badgeText: 'KES 30,000 Invitation',
+    badgeTone: 'accent'
+  },
+  {
+    id: 'act-7',
+    userId: 'usr-talent-2',
+    type: 'application_status_changed',
+    title: 'Proposal Submitted',
+    description: 'You submitted a proposal with Kilifi Roasters brand guidelines attached for "Brand Packaging & Label System".',
+    timestamp: '2026-10-18T16:20:00Z',
+    isRead: true,
+    actorName: 'Brian Kipchoge',
+    actorRole: 'talent',
+    targetId: 'prj-2',
+    linkTarget: 'applications',
+    badgeText: 'Submitted',
+    badgeTone: 'info'
+  },
+
+  // Business 1 (Sarah Wanjiku - GreenBoma)
+  {
+    id: 'act-8',
+    userId: 'usr-biz-1',
+    type: 'deliverable_event',
+    title: 'Deliverables Ready for Review',
+    description: 'Amiina Otieno submitted Milestone 1 code and staging deployment for "Mobile-Optimized Produce Catalog".',
+    timestamp: '2026-10-19T17:30:00Z',
+    isRead: false,
+    actorName: 'Amiina Otieno',
+    actorRole: 'talent',
+    targetId: 'eng-1',
+    linkTarget: 'engagement',
+    badgeText: 'Action Required',
+    badgeTone: 'warning'
+  },
+  {
+    id: 'act-9',
+    userId: 'usr-biz-1',
+    type: 'application_status_changed',
+    title: 'New Proposal Received',
+    description: 'Brian Kipchoge submitted a proposal with Figma showcase for "Brand Packaging & Label System for Organic Fruit Jams".',
+    timestamp: '2026-10-18T16:20:00Z',
+    isRead: false,
+    actorName: 'Brian Kipchoge',
+    actorRole: 'talent',
+    targetId: 'prj-2',
+    linkTarget: 'project',
+    badgeText: 'New Applicant',
+    badgeTone: 'accent'
+  },
+  {
+    id: 'act-10',
+    userId: 'usr-biz-1',
+    type: 'verification_event',
+    title: 'Kenya BRS Business Verification Approved',
+    description: 'Certificate CPR/2023/118249 verified. Verified Kenyan SME trust badge activated on all your listings.',
+    timestamp: '2026-10-15T09:45:00Z',
+    isRead: true,
+    actorName: 'KaziLink Governance',
+    actorRole: 'admin',
+    linkTarget: 'verification',
+    badgeText: 'Verified SME',
+    badgeTone: 'success'
+  },
+  {
+    id: 'act-11',
+    userId: 'usr-biz-1',
+    type: 'project_invitation',
+    title: 'Invitation Sent to Brian Kipchoge',
+    description: 'Sent direct invitation to Brian Kipchoge for project "Brand Packaging & Label System".',
+    timestamp: '2026-10-24T09:15:00Z',
+    isRead: true,
+    actorName: 'Sarah Wanjiku',
+    actorRole: 'business',
+    targetId: 'prj-2',
+    linkTarget: 'project',
+    badgeText: 'Invited',
+    badgeTone: 'info'
+  },
+
+  // Business 2 (David Mwangi - Kilifi Logistics)
+  {
+    id: 'act-12',
+    userId: 'usr-biz-2',
+    type: 'project_invitation',
+    title: 'Invitation Sent to Amiina Otieno',
+    description: 'Sent project invitation to Amiina Otieno for "Driver Fleet Schedule & Fuel Tracking Spreadsheet".',
+    timestamp: '2026-10-25T14:30:00Z',
+    isRead: true,
+    actorName: 'David Mwangi',
+    actorRole: 'business',
+    targetId: 'prj-3',
+    linkTarget: 'project',
+    badgeText: 'Invited',
+    badgeTone: 'info'
+  }
+];
+

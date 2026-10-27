@@ -13,15 +13,21 @@ import {
   FileText, 
   DollarSign,
   AlertCircle,
-  Trash2
+  Trash2,
+  Inbox
 } from 'lucide-react';
 import { Project, Application, WorkArrangement } from '../../types';
+import { ActivityFeed } from '../dashboard/ActivityFeed';
 
 interface BusinessDashboardProps {
   onOpenEngagement: (engagementId: string) => void;
+  onOpenProjectDetail?: (project: Project) => void;
 }
 
-export const BusinessDashboard: React.FC<BusinessDashboardProps> = ({ onOpenEngagement }) => {
+export const BusinessDashboard: React.FC<BusinessDashboardProps> = ({ 
+  onOpenEngagement,
+  onOpenProjectDetail 
+}) => {
   const { 
     currentUser, 
     businessProfiles, 
@@ -35,7 +41,7 @@ export const BusinessDashboard: React.FC<BusinessDashboardProps> = ({ onOpenEnga
     submitBusinessVerification
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'post_project' | 'projects' | 'candidates' | 'engagements' | 'verification'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'post_project' | 'projects' | 'candidates' | 'engagements' | 'verification' | 'activity'>('overview');
 
   // Post Project Form State
   const [title, setTitle] = useState('');
@@ -280,6 +286,16 @@ export const BusinessDashboard: React.FC<BusinessDashboardProps> = ({ onOpenEnga
           <ShieldCheck className="w-3.5 h-3.5" />
           <span>Business Verification</span>
         </button>
+
+        <button
+          onClick={() => setActiveTab('activity')}
+          className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+            activeTab === 'activity' ? 'bg-[#B8F34A] text-[#0B1220] shadow-sm' : 'text-[#A6B2C2] hover:text-[#F5F7FA] hover:bg-white/5'
+          }`}
+        >
+          <Inbox className="w-3.5 h-3.5" />
+          <span>Activity Log</span>
+        </button>
       </div>
 
       {/* Tab: Overview */}
@@ -371,6 +387,18 @@ export const BusinessDashboard: React.FC<BusinessDashboardProps> = ({ onOpenEnga
               )}
             </div>
           </div>
+
+          {/* Recent Activity Feed Widget */}
+          <ActivityFeed
+            isCompact={true}
+            maxItems={3}
+            onOpenProject={(id) => {
+              const p = projects.find(pr => pr.id === id);
+              if (p && onOpenProjectDetail) onOpenProjectDetail(p);
+            }}
+            onOpenEngagement={onOpenEngagement}
+            onNavigateTab={(tab) => setActiveTab(tab as any)}
+          />
         </div>
       )}
 
@@ -800,6 +828,18 @@ export const BusinessDashboard: React.FC<BusinessDashboardProps> = ({ onOpenEnga
             </button>
           </form>
         </div>
+      )}
+
+      {/* Tab: Activity Log */}
+      {activeTab === 'activity' && (
+        <ActivityFeed
+          onOpenProject={(id) => {
+            const p = projects.find(pr => pr.id === id);
+            if (p && onOpenProjectDetail) onOpenProjectDetail(p);
+          }}
+          onOpenEngagement={onOpenEngagement}
+          onNavigateTab={(tab) => setActiveTab(tab as any)}
+        />
       )}
     </div>
   );

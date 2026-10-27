@@ -18,9 +18,11 @@ import {
   DollarSign,
   TrendingUp,
   MapPin,
-  Calendar
+  Calendar,
+  Inbox
 } from 'lucide-react';
 import { TalentSkill, SkillEvidenceType, Project } from '../../types';
+import { ActivityFeed } from '../dashboard/ActivityFeed';
 
 interface TalentDashboardProps {
   onOpenProjectDetail: (project: Project) => void;
@@ -42,7 +44,7 @@ export const TalentDashboard: React.FC<TalentDashboardProps> = ({
     updateTalentProfile
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'proof_of_work' | 'browse' | 'applications' | 'engagements'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'proof_of_work' | 'browse' | 'applications' | 'engagements' | 'activity'>('overview');
 
   // Search & Filter state for Browse
   const [searchQuery, setSearchQuery] = useState('');
@@ -253,6 +255,18 @@ export const TalentDashboard: React.FC<TalentDashboardProps> = ({
         >
           Active Engagements ({myEngagements.length})
         </button>
+
+        <button
+          onClick={() => setActiveTab('activity')}
+          className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+            activeTab === 'activity'
+              ? 'bg-[#B8F34A] text-[#0B1220] shadow-sm'
+              : 'text-[#A6B2C2] hover:text-[#F5F7FA] hover:bg-white/5'
+          }`}
+        >
+          <Inbox className="w-3.5 h-3.5" />
+          <span>Activity & Invitations</span>
+        </button>
       </div>
 
       {/* Tab 1: Overview */}
@@ -282,6 +296,18 @@ export const TalentDashboard: React.FC<TalentDashboardProps> = ({
               </div>
             </div>
           )}
+
+          {/* Recent Activity Feed Widget */}
+          <ActivityFeed
+            isCompact={true}
+            maxItems={3}
+            onOpenProject={(id) => {
+              const p = projects.find(pr => pr.id === id);
+              if (p) onOpenProjectDetail(p);
+            }}
+            onOpenEngagement={onOpenEngagement}
+            onNavigateTab={(tab) => setActiveTab(tab as any)}
+          />
 
           {/* 2-Column Split: Recommended Projects & Recent Applications */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -720,6 +746,18 @@ export const TalentDashboard: React.FC<TalentDashboardProps> = ({
             )}
           </div>
         </div>
+      )}
+
+      {/* Tab 6: Activity & Invitations */}
+      {activeTab === 'activity' && (
+        <ActivityFeed
+          onOpenProject={(id) => {
+            const p = projects.find(pr => pr.id === id);
+            if (p) onOpenProjectDetail(p);
+          }}
+          onOpenEngagement={onOpenEngagement}
+          onNavigateTab={(t) => setActiveTab(t as any)}
+        />
       )}
     </div>
   );

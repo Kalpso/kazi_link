@@ -83,6 +83,7 @@ const MainAppContent: React.FC = () => {
         {activeView === 'business_dashboard' && (
           <BusinessDashboard
             onOpenEngagement={handleOpenEngagement}
+            onOpenProjectDetail={handleSelectProject}
           />
         )}
 
